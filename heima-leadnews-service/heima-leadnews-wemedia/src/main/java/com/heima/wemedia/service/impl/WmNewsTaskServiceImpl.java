@@ -33,7 +33,6 @@ public class WmNewsTaskServiceImpl implements WmNewsTaskService {
     @Override
     @Async
     public void addNewsToTask(Integer id, Date publishTime) {
-
         log.info("添加任务到延迟服务中----begin");
 
         Task task = new Task();
@@ -47,7 +46,6 @@ public class WmNewsTaskServiceImpl implements WmNewsTaskService {
         scheduleClient.addTask(task);
 
         log.info("添加任务到延迟服务中----end");
-
     }
 
     @Autowired
@@ -56,10 +54,9 @@ public class WmNewsTaskServiceImpl implements WmNewsTaskService {
     /**
      * 消费任务，审核文章
      */
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 5000)
     @Override
     public void scanNewsByTask() {
-
         log.info("消费任务，审核文章");
 
         ResponseResult responseResult = scheduleClient.poll(TaskTypeEnum.NEWS_SCAN_TIME.getTaskType(), TaskTypeEnum.NEWS_SCAN_TIME.getPriority());
@@ -67,7 +64,6 @@ public class WmNewsTaskServiceImpl implements WmNewsTaskService {
             Task task = JSON.parseObject(JSON.toJSONString(responseResult.getData()), Task.class);
             WmNews wmNews = ProtostuffUtil.deserialize(task.getParameters(), WmNews.class);
             wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
-
         }
     }
 }

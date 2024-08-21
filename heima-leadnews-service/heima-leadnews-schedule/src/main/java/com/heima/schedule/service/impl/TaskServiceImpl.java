@@ -122,7 +122,6 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public boolean cancelTask(long taskId) {
-
         boolean flag = false;
 
         //删除任务，更新任务日志
@@ -142,7 +141,6 @@ public class TaskServiceImpl implements TaskService {
      * @param task
      */
     private void removeTaskFromCache(Task task) {
-
         String key = task.getTaskType() + "_" + task.getPriority();
         if (task.getExecuteTime() <= System.currentTimeMillis()) {
             cacheService.lRemove(ScheduleConstants.TOPIC + key, 0, JSON.toJSONString(task));
@@ -160,7 +158,6 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     private Task updateDb(long taskId, int status) {
-
         Task task = null;
 
         try {
@@ -178,8 +175,6 @@ public class TaskServiceImpl implements TaskService {
         } catch (Exception e) {
             log.error("task cancel exception taskId={}", taskId);
         }
-
-
         return task;
     }
 
@@ -201,7 +196,6 @@ public class TaskServiceImpl implements TaskService {
             String task_json = cacheService.lRightPop(ScheduleConstants.TOPIC + key);
             if (StringUtils.isNotBlank(task_json)) {
                 task = JSON.parseObject(task_json, Task.class);
-
                 //修改数据库信息
                 updateDb(task.getTaskId(), ScheduleConstants.EXECUTED);
             }
@@ -209,7 +203,6 @@ public class TaskServiceImpl implements TaskService {
             e.printStackTrace();
             log.error("poll task exception");
         }
-
         return task;
     }
 

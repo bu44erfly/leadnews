@@ -3,11 +3,13 @@ package com.heima.wemedia.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.common.constants.WemediaConstants;
+import com.heima.common.constants.WmNewsMessageConstants;
 import com.heima.common.exception.CustomException;
 import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
@@ -28,20 +30,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @Transactional
 public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> implements WmNewsService {
-
     /**
      * 条件查询文章列表
      *
@@ -76,7 +75,6 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         if (StringUtils.isNotBlank(dto.getKeyword())) {
             lambdaQueryWrapper.like(WmNews::getTitle, dto.getKeyword());
         }
-
         //查询当前登录人的文章
         lambdaQueryWrapper.eq(WmNews::getUserId, WmThreadLocalUtil.getUser().getId());
 
@@ -85,7 +83,6 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
 
 
         page = page(page, lambdaQueryWrapper);
-
         //3.结果返回
         ResponseResult responseResult =
                 new PageResponseResult(dto.getPage(), dto.getSize(), (int) page.getTotal());
@@ -107,7 +104,6 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
      */
     @Override
     public ResponseResult submitNews(WmNewsDto dto) {
-
         //0.条件判断
         if(dto == null || dto.getContent() == null){
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
@@ -117,19 +113,20 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         WmNews wmNews = new WmNews();
         //属性拷贝 属性名词和类型相同才能拷贝
         BeanUtils.copyProperties(dto,wmNews);
+
         //封面图片  list---> string
         if(dto.getImages() != null && dto.getImages().size() > 0){
             //[1dddfsd.jpg,sdlfjldk.jpg]-->   1dddfsd.jpg,sdlfjldk.jpg
             String imageStr = StringUtils.join(dto.getImages(), ",");
             wmNews.setImages(imageStr);
         }
+
         //如果当前封面类型为自动 -1
         if(dto.getType().equals(WemediaConstants.WM_NEWS_TYPE_AUTO)){
             wmNews.setType(null);
         }
 
         saveOrUpdateWmNews(wmNews);
-
         //2.判断是否为草稿  如果为草稿结束当前方法
         if(dto.getStatus().equals(WmNews.Status.NORMAL.getCode())){
             return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
@@ -146,7 +143,6 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
       //  wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
         wmNewsTaskService.addNewsToTask(wmNews.getId() , wmNews.getPublishTime());
        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
-
     }
 
     /**
@@ -162,7 +158,6 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
      * @param materials
      */
     private void saveRelativeInfoForCover(WmNewsDto dto, WmNews wmNews, List<String> materials) {
-
         List<String> images = dto.getImages();
 
         //如果当前封面类型为自动，则设置封面类型的数据
@@ -226,7 +221,8 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
                 throw new CustomException(AppHttpCodeEnum.MATERIASL_REFERENCE_FAIL);
             }
 
-            List<Integer> idList = dbMaterials.stream().map(WmMaterial::getId).collect(Collectors.toList());
+            List<Integer> idList =
+                    dbMaterials.stream().map(WmMaterial::getId).collect(Collectors.toList());
 
             //批量保存
             wmNewsMaterialMapper.saveRelations(idList,newsId,type);
@@ -281,5 +277,46 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         }
     }
 
+    /**
+     * 上下架文章
+     *
+     * @param dto
+     * @return
+     */
 
+    @Autowired
+    KafkaTemplate<String ,String> kafkaTemplate ;
+    @Override
+    public ResponseResult downOrUp(WmNewsDto dto) {
+        //1.检查参数
+        if(dto.getId() == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+
+        //2.查询文章
+        WmNews wmNews = getById(dto.getId());
+        if(wmNews == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST,"文章不存在");
+        }
+
+        //3.判断文章是否已发布
+        if(!wmNews.getStatus().equals(WmNews.Status.PUBLISHED.getCode())){
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID,"当前文章不是发布状态，不能上下架");
+        }
+
+        //4.修改文章enable
+        if(dto.getEnable() != null && dto.getEnable() > -1 && dto.getEnable() < 2){
+            update(new LambdaUpdateWrapper<WmNews>().set(WmNews::getEnable,dto.getEnable())
+                    .eq(WmNews::getId,wmNews.getId()));
+
+            if(wmNews.getArticleId() != null){
+                //发送消息，通知article修改文章的配置
+                Map<String,Object> map = new HashMap<>();
+                map.put("articleId",wmNews.getArticleId());
+                map.put("enable",dto.getEnable());
+                kafkaTemplate.send(WmNewsMessageConstants.WM_NEWS_UP_OR_DOWN_TOPIC, JSON.toJSONString(map));
+            }
+        }
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+    }
 }

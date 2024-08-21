@@ -24,9 +24,9 @@ import java.util.Date;
 @EnableConfigurationProperties(MinIOConfigProperties.class)
 @Import(MinIOConfig.class)
 public class MinIOFileStorageService implements FileStorageService {
-
     @Autowired
     private MinioClient minioClient;
+
 
     @Autowired
     private MinIOConfigProperties minIOConfigProperties;

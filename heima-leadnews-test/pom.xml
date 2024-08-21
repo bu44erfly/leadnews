@@ -12,6 +12,8 @@
     <modules>
         <module>freemarker-demo</module>
         <module>minio-demo</module>
+        <module>kafka-demo</module>
+        <module>xxljob-demo</module>
     </modules>
     <artifactId>heima-leadnews-test</artifactId>
     <packaging>pom</packaging>

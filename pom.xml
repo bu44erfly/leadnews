@@ -18,6 +18,9 @@
         <module>heima-leadnews-gateway</module>
         <module>heima-leadnews-test</module>
         <module>heima-leadnews-basic</module>
+        <module>heima-leadnews-admin</module>
+        <module>heima-leadnews-gateway/heima-leadnews-admin-gateway</module>
+        <module>heima-leadnews-behavior</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->

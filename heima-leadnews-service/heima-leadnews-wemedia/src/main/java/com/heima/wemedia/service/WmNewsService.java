@@ -23,4 +23,11 @@ public interface WmNewsService extends IService<WmNews> {
      public ResponseResult submitNews(WmNewsDto dto);
 
 
+    /**
+     * 上下架文章
+     * @param dto
+     * @return
+     */
+    public ResponseResult downOrUp(WmNewsDto dto);
+
 }

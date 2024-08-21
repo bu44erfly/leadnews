@@ -119,9 +119,10 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
             updateById(apArticle);
 
             //修改文章内容
-            ApArticleContent apArticleContent = apArticleContentMapper.selectOne(Wrappers.<ApArticleContent>lambdaQuery().eq(ApArticleContent::getArticleId, dto.getId()));
-            apArticleContent.setContent(dto.getContent());
-            apArticleContentMapper.updateById(apArticleContent);
+//            ApArticleContent apArticleContent = apArticleContentMapper.selectOne(Wrappers.<ApArticleContent>lambdaQuery().eq(ApArticleContent::getArticleId, dto.getId()));
+//            apArticleContent.setContent(dto.getContent());
+//            apArticleContentMapper.updateById(apArticleContent);
+            apArticleContentMapper.updateContent(dto.getId(), dto.getContent());
         }
 
         //3.结果返回  文章的id

@@ -59,7 +59,8 @@ public class ApUserServiceImpl extends ServiceImpl<ApUserMapper, ApUser> impleme
             map.put("user",dbUser);
 
             return ResponseResult.okResult(map);
-        }else {
+        }
+        else {
             //2.游客登录
             Map<String,Object> map = new HashMap<>();
             map.put("token",AppJwtUtil.getToken(0L));

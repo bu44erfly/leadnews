@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/news")
 public class WmNewsController {
 
+
     @Autowired
     private WmNewsService wmNewsService;
 
@@ -26,5 +27,9 @@ public class WmNewsController {
     @PostMapping("/submit")
     public ResponseResult submitNews(@RequestBody WmNewsDto dto){
         return wmNewsService.submitNews(dto);
+    }
+    @PostMapping("/down_or_up")
+    public ResponseResult downOrUp(@RequestBody WmNewsDto dto){
+        return wmNewsService.downOrUp(dto);
     }
 }
