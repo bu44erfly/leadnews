@@ -25,7 +25,7 @@ public class Taskinfo implements Serializable {
     /**
      * 任务id
      */
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long taskId;
 
     /**

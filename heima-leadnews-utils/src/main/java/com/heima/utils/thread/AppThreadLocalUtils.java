@@ -3,6 +3,8 @@ package com.heima.utils.thread;
 
 import com.heima.model.user.pojos.ApUser;
 
+
+
 public class AppThreadLocalUtils {
 
     private final  static ThreadLocal<ApUser> userThreadLocal = new ThreadLocal<>();
@@ -22,5 +24,11 @@ public class AppThreadLocalUtils {
     public static ApUser getUser( ){
         return userThreadLocal.get();
     }
+
+    public static void clear(){
+        userThreadLocal.remove();
+    }
+
+
 
 }

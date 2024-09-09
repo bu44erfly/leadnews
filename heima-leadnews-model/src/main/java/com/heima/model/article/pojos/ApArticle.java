@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ import java.util.Date;
 @TableName("ap_article")
 public class ApArticle implements Serializable {
 
-    @TableId(value = "id",type = IdType.ID_WORKER)
+    @TableId(value = "id",type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 标题

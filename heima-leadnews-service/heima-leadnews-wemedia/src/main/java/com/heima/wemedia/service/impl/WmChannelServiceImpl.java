@@ -22,3 +22,4 @@ public class WmChannelServiceImpl extends ServiceImpl<WmChannelMapper, WmChannel
         return ResponseResult.okResult(list());
     }
 }
+
