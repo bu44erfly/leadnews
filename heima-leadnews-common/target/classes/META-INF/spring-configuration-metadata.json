@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "name": "spring.redis",
+      "type": "com.heima.common.redis.RedisConfiguration",
+      "sourceType": "com.heima.common.redis.RedisConfiguration"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}

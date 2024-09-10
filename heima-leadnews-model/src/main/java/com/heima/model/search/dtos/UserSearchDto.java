@@ -10,7 +10,7 @@ public class UserSearchDto {
 
     // 设备ID
 
-    Integer equipmentId;
+    Integer id;
     /**
      * 搜索关键字
      */

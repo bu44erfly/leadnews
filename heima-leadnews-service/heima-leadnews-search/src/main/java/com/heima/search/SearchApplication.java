@@ -9,6 +9,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAsync
+@MapperScan("com.heima.search.mapper") // 替换为你的 mapper 包路径
+
 public class SearchApplication {
     public static void main(String[] args) {
         SpringApplication.run(SearchApplication.class,args);

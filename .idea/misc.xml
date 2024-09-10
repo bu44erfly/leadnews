@@ -20,6 +20,7 @@
       <set>
         <option value="$PROJECT_DIR$/heima-leadnews-admin/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-behavior/pom.xml" />
+        <option value="$PROJECT_DIR$/heima-leadnews-gateway/heima-leadnews-admin-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-search/pom.xml" />
       </set>
     </option>

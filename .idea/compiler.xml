@@ -16,7 +16,6 @@
         <module name="heima-leadnews-user" />
         <module name="heima-leadnews-article" />
         <module name="kafka-demo" />
-        <module name="heima-leadnews-admin-gateway" />
         <module name="xxljob-demo" />
         <module name="heima-leadnews-schedule" />
         <module name="heima-leadnews-utils" />
@@ -28,6 +27,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="heima-leadnews-admin" target="1.8" />
+      <module name="heima-leadnews-admin-gateway" target="1.8" />
       <module name="heima-leadnews-apis" target="1.8" />
       <module name="heima-leadnews-behavior" target="1.8" />
     </bytecodeTargetLevel>

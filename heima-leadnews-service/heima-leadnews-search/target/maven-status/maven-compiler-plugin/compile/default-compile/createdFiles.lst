@@ -1,5 +1,0 @@
-com/heima/search/SearchApplication.class
-com/heima/search/service/impl/ArticleSearchServiceImpl.class
-com/heima/search/controller/v1/ArticleSearchController.class
-com/heima/search/service/ArticleSearchService.class
-com/heima/search/config/ElasticSearchConfig.class

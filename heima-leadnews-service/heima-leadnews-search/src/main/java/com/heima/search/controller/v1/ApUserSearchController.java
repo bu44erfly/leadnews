@@ -26,8 +26,8 @@ public class ApUserSearchController{
 
     @ApiOperation("加载搜索历史记录")
     @PostMapping("/load")
-    public ResponseResult findUserSearch() {
-        return apUserSearchService.findUserSearch();
+    public ResponseResult findUserSearch(@RequestBody UserSearchDto userSearchDto) {
+        return apUserSearchService.findUserSearch(userSearchDto);
     }
 
 //    @ApiOperation("删除搜索历史记录")

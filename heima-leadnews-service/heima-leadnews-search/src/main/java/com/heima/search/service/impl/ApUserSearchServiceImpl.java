@@ -1,76 +1,72 @@
 package com.heima.search.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.common.enums.AppHttpCodeEnum;
 import com.heima.model.search.dtos.UserSearchDto;
 import com.heima.model.search.pojos.ApUserSearch;
 import com.heima.model.user.pojos.ApUser;
+
+import com.heima.search.mapper.ApUserSearchMapper;
 import com.heima.search.service.ApUserSearchService;
+
 import com.heima.utils.thread.AppThreadLocalUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
-
 
 @Service
 @Log4j2
-public class ApUserSearchServiceImpl implements ApUserSearchService {
+public class ApUserSearchServiceImpl extends ServiceImpl<ApUserSearchMapper, ApUserSearch> implements ApUserSearchService {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Async
     @Override
-    public void insert(String key, Integer userId) {
-        Query q1 =Query.query(Criteria.where("keyword").is(key).and("userId").is(userId));
-         ApUserSearch apUserSearch =mongoTemplate.findOne(q1, ApUserSearch.class);
-         if(apUserSearch != null){
-             apUserSearch.setCreatedTime(new Date());
-             mongoTemplate.save(apUserSearch);
-             return ;
-         }
-         apUserSearch = new ApUserSearch();
-         apUserSearch.setUserId(userId);
-         apUserSearch.setKeyword(key);
-         apUserSearch.setCreatedTime(new Date());
-
-         Query q2 =Query.query(Criteria.where("userId").is(userId))
-                 .with(Sort.by(Sort.Direction.ASC,"createdTime"));
-
-        List<ApUserSearch> searchList   =mongoTemplate.find(q2 ,ApUserSearch.class);
-        if(searchList ==null || searchList.size() <10){
-            mongoTemplate.save(apUserSearch);
+    public ResponseResult findUserSearch(UserSearchDto userSearchDto) {
+        //1.检查数据
+        if(userSearchDto.getPageSize() > 50){
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
-        else{
-            ApUserSearch ap=searchList.get(0) ;
-            mongoTemplate.findAndReplace(Query.query(Criteria.where("id").is(ap.getId())),
-                    apUserSearch);
-        }
+        ApUser user = AppThreadLocalUtils.getUser();
+
+        //3.分页查询，默认查询5条数据返回
+        IPage pageParam = new Page(0, userSearchDto.getPageSize());
+        IPage page = page(pageParam, new LambdaQueryWrapper<ApUserSearch>().eq(ApUserSearch::getEntryId, user.getId())
+                .eq(ApUserSearch::getStatus, 1).orderByDesc(ApUserSearch::getCreatedTime));
+
+        return ResponseResult.okResult(page.getRecords().stream().limit(10));
     }
 
+
+
     @Override
-    public ResponseResult findUserSearch() {
-        ApUser user = AppThreadLocalUtils.getUser();
-        if(user ==null) {
-            return ResponseResult.errorResult(404,"未登录") ;
+    @Async("taskExecutor")
+    public void insert(String key , Integer userId) {
+//        int a = 1/0;
+        //1.查询当前搜索记录
+        ApUserSearch apUserSearch = getOne(Wrappers.<ApUserSearch>lambdaQuery().eq(ApUserSearch::getEntryId, userId).eq(ApUserSearch::getKeyword, key));
+
+        //2.如果存在 更新状态
+        if(apUserSearch != null && apUserSearch.getStatus() == 1){
+            log.info("当前关键字已存在，无需再次保存");
+            return;
+        }else if(apUserSearch != null && apUserSearch.getStatus() == 0){
+            apUserSearch.setStatus(1);
+            updateById(apUserSearch);
+            return;
         }
 
-//        3. 根据行为实体id查询 历史记录
-//        默认查询10条历史记录，并且按照时间降序排序
-        Query query = Query.query(Criteria.where("userId").is(user.getId()))
-                .with(Sort.by(Sort.Direction.DESC, "createdTime"))
-                .limit(10);
-        List<ApUserSearch> apUserSearchList = mongoTemplate.find(query, ApUserSearch.class);
-
-        return ResponseResult.okResult(apUserSearchList);
+        //3.如果不存在，保存新的数据
+        apUserSearch = new ApUserSearch();
+        apUserSearch.setEntryId(userId);
+        apUserSearch.setStatus(1);
+        apUserSearch.setKeyword(key);
+        apUserSearch.setCreatedTime(new Date());
+        save(apUserSearch);
     }
 }
