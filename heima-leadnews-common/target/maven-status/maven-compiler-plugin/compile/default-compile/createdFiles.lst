@@ -1,11 +1,15 @@
+META-INF/spring-configuration-metadata.json
 com/heima/common/constants/ArticleConstants.class
 com/heima/common/exception/CustomException.class
 com/heima/common/swagger/Swagger2Configuration.class
+com/heima/common/mongo/MongoDBconfigure.class
 com/heima/common/swagger/SwaggerConfiguration.class
 com/heima/common/constants/ScheduleConstants.class
 com/heima/common/redis/CacheService$1.class
 com/heima/common/exception/ExceptionCatch.class
+com/heima/common/threadpool/ThreadPoolConfig.class
 com/heima/common/redis/CacheService$2.class
 com/heima/common/constants/WemediaConstants.class
+com/heima/common/redis/RedisConfiguration.class
 com/heima/common/constants/WmNewsMessageConstants.class
 com/heima/common/redis/CacheService.class

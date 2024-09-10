@@ -1,0 +1,6 @@
+com/heima/api/schedule/IScheduleClient.class
+com/heima/api/comment/CommentControllerApi.class
+com/heima/api/user/ApUserControllerApi.class
+com/heima/api/search/ArticleSearchControllerApi.class
+com/heima/api/search/ApAssociateWordsControllerApi.class
+com/heima/api/article/IArticleClient.class

@@ -14,6 +14,8 @@
         <option value="$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-schedule/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-search/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-search/pom.xml" />
+        <option value="$PROJECT_DIR$/heima-leadnews-model/src/main/java/com/heima/model/comment/heima-leadnews-comment/pom.xml" />
+        <option value="$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-comment/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -21,6 +23,7 @@
         <option value="$PROJECT_DIR$/heima-leadnews-admin/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-behavior/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-gateway/heima-leadnews-admin-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/heima-leadnews-model/src/main/java/com/heima/model/comment/heima-leadnews-comment/pom.xml" />
         <option value="$PROJECT_DIR$/heima-leadnews-search/pom.xml" />
       </set>
     </option>

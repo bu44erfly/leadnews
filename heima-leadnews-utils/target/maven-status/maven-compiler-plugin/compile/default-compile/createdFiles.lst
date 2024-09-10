@@ -1,6 +1,5 @@
 com/heima/utils/common/UrlSignUtils.class
 com/heima/utils/common/FileUtils.class
-com/heima/utils/thread/AdminThreadLocalUtils.class
 com/heima/utils/common/SnowflakeIdWorker.class
 com/heima/utils/common/BCrypt.class
 com/heima/utils/common/Compute.class
