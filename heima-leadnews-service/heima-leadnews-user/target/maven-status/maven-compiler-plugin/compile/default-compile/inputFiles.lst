@@ -1,6 +1,9 @@
+/Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/controller/v1/UserRelationController.java
 /Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/service/impl/ApUserServiceImpl.java
 /Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/mapper/ApUserMapper.java
+/Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/service/ApUserRelationService.java
 /Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/controller/v1/ApUserController.java
 /Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/UserApplication.java
+/Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/service/impl/ApUserRelationServiceImpl.java
 /Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/controller/v1/ApUserLoginController.java
 /Users/mac/Desktop/test/leadnews/heima-leadnews-service/heima-leadnews-user/src/main/java/com/heima/user/service/ApUserService.java

@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/heima-leadnews-basic/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-basic/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-behavior/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/heima-leadnews-behavior/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-feign-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-gateway/heima-leadnews-admin-gateway/src/main/java" charset="UTF-8" />
@@ -18,6 +19,7 @@
     <file url="file://$PROJECT_DIR$/heima-leadnews-model/src/main/java/com/heima/model/comment/heima-leadnews-comment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-search/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-article/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-behavior/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-comment/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-comment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/heima-leadnews-service/heima-leadnews-schedule/src/main/java" charset="UTF-8" />

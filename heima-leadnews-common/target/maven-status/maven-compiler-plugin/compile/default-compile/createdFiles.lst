@@ -1,3 +1,4 @@
+com/heima/common/constants/FollowBehaviorConstants.class
 META-INF/spring-configuration-metadata.json
 com/heima/common/constants/ArticleConstants.class
 com/heima/common/exception/CustomException.class
