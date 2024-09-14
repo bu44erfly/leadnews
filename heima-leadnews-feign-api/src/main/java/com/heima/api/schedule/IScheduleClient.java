@@ -14,6 +14,7 @@ public interface IScheduleClient {
 
     /**
      * 添加延迟任务
+     *
      * @param task
      * @return
      */
@@ -25,15 +26,4 @@ public interface IScheduleClient {
      * @param taskId
      * @return
      */
-    @GetMapping("/api/v1/task/{taskId}")
-    public ResponseResult cancelTask(@PathVariable("taskId") long taskId);
-
-    /**
-     * 按照类型和优先级拉取任务
-     * @param type
-     * @param priority
-     * @return
-     */
-    @GetMapping("/api/v1/task/{type}/{priority}")
-    public ResponseResult poll(@PathVariable("type") int type,@PathVariable("priority") int priority);
 }

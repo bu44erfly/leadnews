@@ -10,7 +10,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan("com.heima.article.mapper")

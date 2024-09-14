@@ -1,8 +1,14 @@
 server:
   port: 51803
 spring:
+
   application:
     name: leadnews-wemedia
+  rabbitmq:
+    host: 127.0.0.1  # RabbitMQ 的 IP 地址
+    port: 5672           # RabbitMQ 的 AMQP 端口，默认是 5672
+    username: guest       # 连接 RabbitMQ 的用户名
+    password: guest
   cloud:
     nacos:
       discovery:

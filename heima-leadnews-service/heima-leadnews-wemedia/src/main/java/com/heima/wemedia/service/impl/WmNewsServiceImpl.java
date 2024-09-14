@@ -137,11 +137,11 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         saveRelativeInfoForContent(materials,wmNews.getId());
 
         //4.不是草稿，保存文章封面图片与素材的关系，如果当前布局是自动，需要匹配封面图片
-       saveRelativeInfoForCover(dto,wmNews,materials);
+        saveRelativeInfoForCover(dto,wmNews,materials);
 
       //  wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
         wmNewsTaskService.addNewsToTask(wmNews.getId() , wmNews.getPublishTime());
-       return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 
     /**
