@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
+    /**
+     * 交换器和队列 生成
+     */
     @Bean
     DirectExchange orderDirect() {
         return ExchangeBuilder
@@ -25,11 +28,13 @@ public class RabbitMqConfig {
                 .build();
     }
 
+    /**
+     * ttl队列 绑定死信交换器和队列
+     */
     @Bean
     public Queue orderCancelQueue() {
         return new Queue(QueueEnum.QUEUE_ORDER_CANCEL.getName());
     }
-
     @Bean
     public Queue orderTtlQueue() {
         return QueueBuilder
@@ -39,6 +44,10 @@ public class RabbitMqConfig {
                 .build();
     }
 
+
+    /**
+     *  交换器和队列 的 绑定
+     */
     @Bean
     Binding orderBinding(@Autowired DirectExchange orderDirect, @Autowired Queue orderCancelQueue) {
         return BindingBuilder
@@ -46,7 +55,6 @@ public class RabbitMqConfig {
                 .to(orderDirect)
                 .with(QueueEnum.QUEUE_ORDER_CANCEL.getRouteKey());
     }
-
     @Bean
     Binding orderTtlBinding(@Autowired DirectExchange orderTtlDirect, @Autowired Queue orderTtlQueue) {
         return BindingBuilder
