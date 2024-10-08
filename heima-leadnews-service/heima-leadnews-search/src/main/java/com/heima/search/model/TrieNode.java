@@ -7,7 +7,8 @@ public class TrieNode {
     public char var;
     public boolean isWord;
     public Map<Character,TrieNode> children = new HashMap<>();
-    public boolean containLongTail = false;
+ //   public boolean containLongTail = false;
+
     public TrieNode(){}
     public TrieNode(char c){
         TrieNode node = new TrieNode();

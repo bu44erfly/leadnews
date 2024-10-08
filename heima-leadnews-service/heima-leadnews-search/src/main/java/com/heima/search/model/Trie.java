@@ -38,6 +38,7 @@ public class Trie {
         for (int i = 0; i < prefix.length(); i++) {
             char c = prefix.charAt(i);
             if (!ws.children.containsKey(c)) return match;
+
             ws = ws.children.get(c);
         }
 
@@ -46,7 +47,7 @@ public class Trie {
         return match;
     }
 
-    // Helper method to collect all words from a given node
+    // Helper method to collect all words from a given node  dfs
     private void collectWords(TrieNode node, StringBuilder prefix, List<String> result) {
         if (node.isWord) {
             result.add(prefix.toString());
