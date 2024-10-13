@@ -20,7 +20,7 @@ public enum QueueEnum {
     public static final Long default_ttl = 5000L ;
 
     /**
-     * 交换名称
+     * 绑定的交换机
      */
     private String exchange;
     /**

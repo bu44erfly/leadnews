@@ -62,6 +62,7 @@ public class ApAssociateWordsServiceImpl extends ServiceImpl<ApAssociateWordsMap
             apAssociateWords = list();
             redisTemplate.opsForValue().set("associate_list", JSON.toJSONString(apAssociateWords));
         }
+
         //4.构建trie数据结构，从trie中获取数据，封装返回
         Trie t = new Trie();
         for (ApAssociateWords apAssociateWord : apAssociateWords) {
@@ -71,9 +72,10 @@ public class ApAssociateWordsServiceImpl extends ServiceImpl<ApAssociateWordsMap
         List<String> ret = t.startWith(dto.getSearchWords());
         List<ApAssociateWords> resultList  = new ArrayList<>();
         for (String s : ret) {
-            ApAssociateWords aaw = new ApAssociateWords();
-            aaw.setAssociateWords(s);
-            resultList.add(aaw);
+            ApAssociateWords temp= new ApAssociateWords();
+            temp.setAssociateWords(s);
+
+            resultList.add(temp);
         }
         return ResponseResult.okResult(resultList);
     }

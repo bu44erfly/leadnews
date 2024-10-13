@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
 
     /**
-     * 交换器和队列 生成
+     * 业务交换器 ，DLX，死信队列生成
      */
     @Bean
     DirectExchange orderDirect() {
@@ -19,7 +19,6 @@ public class RabbitMqConfig {
                 .durable(true)
                 .build();
     }
-
     @Bean
     DirectExchange orderTtlDirect() {
         return ExchangeBuilder
@@ -27,14 +26,14 @@ public class RabbitMqConfig {
                 .durable(true)
                 .build();
     }
-
-    /**
-     * ttl队列 绑定死信交换器和队列
-     */
     @Bean
     public Queue orderCancelQueue() {
         return new Queue(QueueEnum.QUEUE_ORDER_CANCEL.getName());
     }
+
+    /**
+     * 业务队列绑定 死信交换器和队列
+     */
     @Bean
     public Queue orderTtlQueue() {
         return QueueBuilder
@@ -46,7 +45,7 @@ public class RabbitMqConfig {
 
 
     /**
-     *  交换器和队列 的 绑定
+     * routing key 设置 （ 业务交换器 与 DLX )
      */
     @Bean
     Binding orderBinding(@Autowired DirectExchange orderDirect, @Autowired Queue orderCancelQueue) {
