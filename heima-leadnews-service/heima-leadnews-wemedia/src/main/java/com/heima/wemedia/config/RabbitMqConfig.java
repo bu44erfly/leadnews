@@ -25,18 +25,17 @@ public class RabbitMqConfig {
                 .build();
     }
 
-
-
-
+    /**
+     *  死信队列
+     * @return
+     */
     @Bean
     public Queue orderCancelQueue() {
         return new Queue(QueueEnum.QUEUE_ORDER_CANCEL.getName());
     }
 
-    /** 死信相关的信息应该常量定义的。。。。这里直接写了 x-dead-letter-exchange  ，key
-     *
-     * QUEUE_TTL_ORDER_CANCEL 消息过期后，成为死信进入死信队列
-     * ttl队列绑了死信交换器
+    /**
+     * 创建ttl队列，并且绑了死信交换器和死信队列
      * @return
      */
     @Bean
@@ -51,7 +50,7 @@ public class RabbitMqConfig {
 
     /**
        以下配置：
-           2对交换器和队列的绑定（死信和ttl队列）
+           2对[交换器和队列]的绑定（死信和ttl队列）
      */
 
 
